@@ -1,0 +1,66 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": "Shared defaults for my app repos (autopakr, pakr, ynab, synology-tui). Weekly and grouped, so each batch runs CI once. Patches merge themselves once CI passes (a repo without PR checks never automerges: Renovate waits for a green status); minors and majors wait for review. homelab has its own config.",
+  "extends": ["config:recommended"],
+  "minimumReleaseAge": "3 days",
+  "schedule": ["before 6am on monday"],
+  "prConcurrentLimit": 5,
+  "osvVulnerabilityAlerts": true,
+  "vulnerabilityAlerts": { "labels": ["security"] },
+  "packageRules": [
+    {
+      "description": "Patches that pass CI merge themselves on the weekly run. Renovate merges (not GitHub's auto-merge), so a red or missing check stops it.",
+      "matchUpdateTypes": ["patch"],
+      "automerge": true,
+      "automergeType": "pr",
+      "platformAutomerge": false
+    },
+    {
+      "description": "Major versions: one PR each, always reviewed.",
+      "matchUpdateTypes": ["major"],
+      "automerge": false
+    },
+    {
+      "groupName": "go modules",
+      "matchManagers": ["gomod"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "postUpdateOptions": ["gomodTidy"]
+    },
+    {
+      "groupName": "cargo crates",
+      "matchManagers": ["cargo"],
+      "matchUpdateTypes": ["minor", "patch"]
+    },
+    {
+      "groupName": "web packages",
+      "matchManagers": ["npm"],
+      "matchUpdateTypes": ["minor", "patch"]
+    },
+    {
+      "groupName": "mise tools",
+      "matchManagers": ["mise"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchPackageNames": ["!go", "!node", "!rust"]
+    },
+    {
+      "groupName": "github actions",
+      "matchManagers": ["github-actions"],
+      "matchUpdateTypes": ["minor", "patch"]
+    },
+    {
+      "description": "The Go toolchain in mise.toml and the Dockerfile's builder image move together.",
+      "groupName": "go toolchain",
+      "matchPackageNames": ["go", "golang"]
+    },
+    {
+      "description": "Node in mise.toml and the Dockerfile's builder image move together.",
+      "groupName": "node toolchain",
+      "matchPackageNames": ["node"]
+    },
+    {
+      "description": "The Rust toolchain in mise.toml and the Dockerfile's builder image move together.",
+      "groupName": "rust toolchain",
+      "matchPackageNames": ["rust"]
+    }
+  ]
+}
