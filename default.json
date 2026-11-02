@@ -1,8 +1,9 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "description": "Shared defaults for my app repos (autopakr, pakr, ynab, synology-tui). Weekly and grouped, so each batch runs CI once. Patches merge themselves once CI passes (a repo without PR checks never automerges: Renovate waits for a green status); minors and majors wait for review. homelab has its own config. Toolchain rules match dep names: the package name of a Docker image or a mise tool is often not the bare tool name.",
+  "description": "Shared defaults for my app repos (autopakr, pakr, ynab, fastmail, fastmail-mcp). Weekly and grouped, so each batch runs CI once. Patches merge themselves once CI passes (a repo without PR checks never automerges: Renovate waits for a green status); minors and majors wait for review. homelab has its own config. Toolchain rules match dep names: the package name of a Docker image or a mise tool is often not the bare tool name.",
   "extends": [
-    "config:recommended"
+    "config:recommended",
+    "helpers:pinGitHubActionDigests"
   ],
   "minimumReleaseAge": "3 days",
   "schedule": [
@@ -87,8 +88,12 @@
       ],
       "matchUpdateTypes": [
         "minor",
-        "patch"
-      ]
+        "patch",
+        "pin",
+        "pinDigest",
+        "digest"
+      ],
+      "description": "GitHub Actions are pinned to commit SHAs (a moved tag can't change what runs); the pin, digest, minor and patch updates come as one PR."
     },
     {
       "description": "The Go toolchain in mise.toml and the Dockerfile's builder image move together.",

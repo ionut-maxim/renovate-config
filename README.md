@@ -22,6 +22,9 @@ What [`default.json`](default.json) does:
 - **Patches merge themselves** once the repo's PR checks pass. A repo with no
   PR checks never automerges. Minors wait for review, and majors come as one
   PR each, also reviewed.
+- **Actions pinned to commit SHAs** (`helpers:pinGitHubActionDigests`): a
+  workflow runs exactly the code that was reviewed, even if an action's tag is
+  moved later. The version stays as a comment, and updates bump both.
 - **Security fixes** (GitHub alerts and OSV) skip the schedule and are
   labelled `security`.
 
