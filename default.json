@@ -1,6 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "description": "Shared defaults for my app repos (autopakr, pakr, ynab, fastmail, fastmail-mcp). Weekly and grouped, so each batch runs CI once. Patches merge themselves once CI passes (a repo without PR checks never automerges: Renovate waits for a green status); minors and majors wait for review. homelab has its own config. Toolchain rules match dep names: the package name of a Docker image or a mise tool is often not the bare tool name.",
+  "description": "Shared defaults for my app repos (autopakr, pakr, ynab, fastmail, fastmail-mcp). Weekly and grouped. mise.lock moves with mise.toml (Renovate's mise manager rewrites it in the same PR), so each batch runs CI once. Patches merge themselves once CI passes (a repo without PR checks never automerges: Renovate waits for a green status); minors and majors wait for review. homelab has its own config. Toolchain rules match dep names: the package name of a Docker image or a mise tool is often not the bare tool name.",
   "extends": [
     "config:recommended",
     "helpers:pinGitHubActionDigests"
@@ -16,6 +16,18 @@
       "security"
     ]
   },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Versions pinned in workflows with a '# renovate: datasource=\u2026 depName=\u2026' comment on the line above, such as the mise version that reads each repo's mise.lock.",
+      "managerFilePatterns": [
+        "/^\\.github/workflows/.+\\.ya?ml$/"
+      ],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\n\\s*\\w+:\\s*\"?(?<currentValue>[^\"\\s]+)\"?"
+      ]
+    }
+  ],
   "packageRules": [
     {
       "description": "Patches that pass CI merge themselves on the weekly run. Renovate merges (not GitHub's auto-merge), so a red or missing check stops it.",
@@ -116,6 +128,13 @@
       "matchDepNames": [
         "rust"
       ]
+    },
+    {
+      "description": "mise itself (pinned in workflows) moves with the mise tools; mise.lock's format needs a recent mise.",
+      "matchDepNames": [
+        "jdx/mise"
+      ],
+      "groupName": "mise tools"
     }
   ]
 }
