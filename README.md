@@ -25,6 +25,11 @@ What [`default.json`](default.json) does:
 - **Actions pinned to commit SHAs** (`helpers:pinGitHubActionDigests`): a
   workflow runs exactly the code that was reviewed, even if an action's tag is
   moved later. The version stays as a comment, and updates bump both.
+- **mise.lock:** a repo that commits `mise.lock` gets it rewritten in the same
+  PR as the `mise.toml` bump, with the new versions' URLs and checksums.
+- **Versions pinned in workflows:** a line such as `version: 2026.11.8` with
+  `# renovate: datasource=github-releases depName=jdx/mise` above it is
+  bumped too. mise itself joins the mise tools PR.
 - **Security fixes** (GitHub alerts and OSV) skip the schedule and are
   labelled `security`.
 
