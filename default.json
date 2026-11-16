@@ -69,6 +69,17 @@
       ]
     },
     {
+      "description": "The windows-rs crates (windows, windows-core, windows-implement, …) come out on separate version lines, and a newer windows-core can't build with an older windows. They get their own PR that never merges itself, so a mismatch can't hold up the other crates; close it and Renovate skips that version.",
+      "groupName": "windows-rs",
+      "matchManagers": [
+        "cargo"
+      ],
+      "matchPackageNames": [
+        "/^windows(-.+)?$/"
+      ],
+      "automerge": false
+    },
+    {
       "groupName": "web packages",
       "matchManagers": [
         "npm"
