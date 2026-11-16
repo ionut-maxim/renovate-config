@@ -16,7 +16,10 @@ What [`default.json`](default.json) does:
 
 - **Weekly, grouped:** before 06:00 UTC on Mondays, after a 3-day release age.
   Go modules, cargo crates, npm packages, mise tools and GitHub Actions each
-  come as one PR (minor and patch updates).
+  come as one PR (minor and patch updates). The windows-rs crates
+  (`windows`, `windows-core`, …) are the exception: they get their own PR
+  that never merges itself, since their versions move separately and a
+  mismatch would hold up every other crate.
 - **Toolchains move together:** Go, Node and Rust in `mise.toml` and the
   Dockerfile's builder image share a PR.
 - **Patches merge themselves** once the repo's PR checks pass. A repo with no
